@@ -8,4 +8,6 @@ skills:
 - Sensitivity Analysis
 - Rstudio programming
 - Data visualization
+
+main-image: /stahel_book.png
 ---

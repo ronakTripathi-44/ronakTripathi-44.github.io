@@ -15,9 +15,10 @@ title: Ronak Tripathi's Portfolio # This is what shows up in the tab of the brow
 name: Ronak Tripathi
 headline: A collection of my projects and cool assignments I have undertaken over my career and academic journey
 description: >- # dont remove this line. this will ignore all new lines until the next section
-  Write an awesome intro and discuss your highlights and qualification. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
+  I am Ronak Tripathi, A forward-thinking civil engineer who uses dataanalysis and systems thinking to developresilient, sustainable solutions to the challenges
+facing our construction industry. I am currently enrolled at the Technische Universität Berlin, in the Masters program Civil Systems Engineering, where we learn to deploy holistic Systems Thinking approach and 
+data analytics to upgrade and digitize construction practices. I currently live in Berlin, where I was employed at the Reib_CFK Projectat Entwerfen und Konstruieren Massivbau and currently I work for the cabon capture 
+mineralization project Seq Kalz at Bauchemie.
 
 # Place your profile image in /assets/images/profile-image/folder and edit the file name
 profile_image: ./assets/images/profile-image/IMG_20251107_144249675_PORTRAIT.jpg
@@ -33,7 +34,7 @@ resume-url: /assets/resume/Resume_english.pdf
 external-links:    # input only your own url slug. The icons with missing entries will not appear.
   linkedin: ronak-tripathi-9376a913b
   github: ronakTripathi-44
-  stackoverflow: test      # https://stackoverflow.com/users/{your url slug}
+  stackoverflow:   # https://stackoverflow.com/users/{your url slug}
   medium:            # https://medium.com/@{your url slug} 
   x-twitter:   # https://x.com/{your url slug} 
   threads:            # https://threads.net/@{your url slug} 

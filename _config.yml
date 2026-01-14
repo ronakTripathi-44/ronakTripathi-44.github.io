@@ -14,11 +14,7 @@ title: Ronak Tripathi's Portfolio # This is what shows up in the tab of the brow
 # Hero Section
 name: Ronak Tripathi
 headline: A collection of my projects and cool assignments I have undertaken over my career and academic journey
-description: >- # dont remove this line. this will ignore all new lines until the next section
-  I am Ronak Tripathi, A forward-thinking civil engineer who uses dataanalysis and systems thinking to developresilient, sustainable solutions to the challenges
-facing our construction industry. I am currently enrolled at the Technische Universität Berlin, in the Masters program Civil Systems Engineering, where we learn to deploy holistic Systems Thinking approach and 
-data analytics to upgrade and digitize construction practices. I currently live in Berlin, where I was employed at the Reib_CFK Projectat Entwerfen und Konstruieren Massivbau and currently I work for the cabon capture 
-mineralization project Seq Kalz at Bauchemie.
+description: I am Ronak Tripathi, a forward-thinking civil engineer who uses data analysis and systems thinking to develop resilient, agile solutions to the challenges facing our construction industry. I am currently enrolled at the Technische Universität Berlin, in the Masters program Civil Systems Engineering, where we learn to deploy holistic Systems Thinking approach and data analytics to upgrade and digitize construction practices. I currently live in Berlin, where I was employed at the Reib_CFK Projectat Entwerfen und Konstruieren Massivbau and currently I work for the cabon capture mineralization project Seq Kalz at Bauchemie.
 
 # Place your profile image in /assets/images/profile-image/folder and edit the file name
 profile_image: ./assets/images/profile-image/IMG_20251107_144249675_PORTRAIT.jpg

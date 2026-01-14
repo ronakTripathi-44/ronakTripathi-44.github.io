@@ -10,6 +10,7 @@ skills:
 
 main-image: /stahel_book.png
 ---
+
 ## Project Overview
 
 This term project develops a **risk assessment and sensitivity analysis framework** to evaluate the reuse of recycled asphalt pavements (RAP) within a **circular economy** context.

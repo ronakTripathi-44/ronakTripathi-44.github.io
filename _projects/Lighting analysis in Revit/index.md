@@ -5,7 +5,7 @@ description: This project explores how early-stage solar and lighting analysis, 
 skills: 
 - BIM
 
-main-image: 
+main-image: /Screenshot (26).png
 ---
 
 ## Project Overview

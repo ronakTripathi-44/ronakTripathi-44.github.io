@@ -29,7 +29,7 @@ Lighting/daylighting analysis to evaluate daylight distribution and penetration 
 
 The focus was placed on interpretability and decision support, rather than on final compliance or certification-level results.
 
-![Solar analysis on the cloud](Screenshot(23).png)
+![Solar analysis on the cloud](/_projects/Lighting analysis in Revit/Screenshot(23).png)
 
 ---
 
@@ -45,7 +45,7 @@ Key Takeaway
 
 Early-stage solar and daylighting analysis in BIM enhances conceptual design quality in HOAI LPH 1–3 by providing fast, interpretable feedback. While not a substitute for detailed simulations, it strengthens early decision-making and supports a more integrated planning process.
 
-![Lighting analysis – south facade](Screenshot(26).png)
+![Lighting analysis – south facade](/_projects/Lighting analysis in Revit/Screenshot(26).png)
 
 
 

@@ -58,19 +58,8 @@ Twinmotion was used to communicate design intent, materiality, and human scale, 
 
 The following video demonstrates the Revit modelling environment used in this project, highlighting model adaptation, geometry cleanup, and preparation for visualization workflows.
 
-<video controls width="60%">
-  <source src="revit_screen_recording.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
 
 ![Twinmotion render1](/_projects/shipping-container-retrofit/revit_screen_recording.gif)
-
-<img 
-  src="/_projects/shipping-container-retrofit/revit_screen_recording.gif" 
-  alt="Twinmotion render1" 
-  style="width:60%; height:auto;"
->
 
 <img src="/_projects/shipping-container-retrofit/revit_screen_recording.gif" alt="Twinmotion GIF" style="width:50%; height:auto;">
 
@@ -84,6 +73,11 @@ This project demonstrates how circular economy theory can be operationalized thr
 ![Twinmotion render1](/_projects/shipping-container-retrofit/Image1.jpg)
 ![Twinmotion render2](/_projects/shipping-container-retrofit/Image2.jpg)
 ![Twinmotion render3](/_projects/shipping-container-retrofit/Image3.jpg)
+
+<img src="/_projects/shipping-container-retrofit/Image1.jpg" alt="Twinmotion render1" style="width:60%; height:auto;">
+<img src="/_projects/shipping-container-retrofit/Image2.jpg" alt="Twinmotion render2" style="width:60%; height:auto;">
+<img src="/_projects/shipping-container-retrofit/Image3.jpg" alt="Twinmotion render3" style="width:60%; height:auto;">
+
 
 <p align="center">
   <img src="/_projects/shipping-container-retrofit/Image1.jpg" alt="Twinmotion render1" style="width:60%; height:auto;">

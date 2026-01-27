@@ -1,10 +1,9 @@
 ---
 layout: post
-title: Circular Economy Design Study: Adaptive Reuse of a Shipping Container Café
+title: Circular Economy Design Study, an Adaptive Reuse of a Shipping Container Café
 description: This project investigates the adaptive reuse of decommissioned shipping containers as a low-impact architectural intervention, framed through circular economy principles and supported by Building Information Modelling (BIM) and real-time visualization. The study explores how existing industrial assets can be repurposed with minimal environmental cost, extending their functional lifespan while reducing the need for new material extraction.
-
 Shipping containers were selected as a case study due to their inherent structural robustness, modularity, and global availability as post-use assets. Rather than approaching the project as a ground-up architectural design, the focus is placed on asset reuse, retrofit strategies, and digital representation, aligning with circular economy objectives.
-Skills:
+skills:
 - Circular economy and adaptive reuse principles  
 - Application of Walter Stahel’s Era of R and Era of D frameworks  
 - Revit (BIM model adaptation and evaluation)  
@@ -12,7 +11,8 @@ Skills:
 - Twinmotion real-time rendering and environmental storytelling  
 - Sustainable design communication through visual media  
 
-main-image: 
+main-image: _projects/Shipping container retrofit/container.png
+
 ---
 
 ## Project Overview
@@ -22,7 +22,7 @@ This project investigates the adaptive reuse of decommissioned shipping containe
 Shipping containers were selected as a case study due to their inherent structural robustness, modularity, and global availability as post-use assets. Rather than approaching the project as a ground-up architectural design, the focus is placed on **asset reuse, retrofit strategies, and digital representation**, aligning with circular economy objectives.
 
 <!-- Image placeholder: Project hero render -->
-![Project Hero Image – Shipping Container Café](images/hero_render_placeholder.jpg)
+![Circular economy framework](_projects/Shipping container retrofit/Image1.jpg)
 
 ---
 
@@ -35,7 +35,7 @@ In this context, adaptive reuse represents a closed-loop strategy within the Era
 This project positions architectural retrofitting as a practical mechanism for closing material loops, demonstrating how waste goods can be transformed into functional spaces without incurring the embodied carbon costs associated with demolition and new construction.
 
 <!-- Image placeholder: Circular economy / Era of R & D diagram -->
-![Circular Economy Diagram – Era of R and Era of D](images/circular_economy_diagram_placeholder.jpg)
+![Circular Economy Diagram – Era of R and Era of D](_projects/Shipping container retrofit/Image2.jpg)
 
 ---
 
@@ -63,7 +63,7 @@ The project follows a structured digital pipeline to translate BIM data into hig
 Twinmotion was used to communicate design intent, materiality, and human scale, emphasizing how visualization tools can support sustainable design narratives and stakeholder engagement. The final renders aim to convey the social and environmental potential of adaptive reuse rather than purely formal expression.
 
 <!-- Image placeholder: Twinmotion render -->
-![Twinmotion Render – Exterior View](images/twinmotion_render_placeholder.jpg)
+![Twinmotion Render – Exterior View](_projects/Shipping container retrofit/Image2.jpg)
 
 ---
 
@@ -73,7 +73,7 @@ The following video demonstrates the Revit modelling environment used in this pr
 
 <!-- Video placeholder: Revit screen recording -->
 <video controls width="100%">
-  <source src="videos/revit_screen_recording_placeholder.mp4" type="video/mp4">
+  <source src="_projects/Shipping container retrofit/Aufzeichnung_cafe_retrofit.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
@@ -84,7 +84,7 @@ The following video demonstrates the Revit modelling environment used in this pr
 This project demonstrates how circular economy theory can be operationalized through architectural retrofitting and digital workflows. By prioritizing reuse over replacement, the study highlights the role of designers in extending asset lifecycles and reducing environmental impact through informed, low-intervention strategies.
 
 
-![Final Outcome Montage](images/final_outcome_placeholder.jpg)
+![Final Outcome Montage](_projects/Shipping container retrofit/Image3.jpg)
 
 ---
 

@@ -8,5 +8,5 @@ skills:
 - Rendering and visualization tools
 - Design Thinking and sustainable communication
 - 
-main-image: _projects/Shipping container retrofit/container.png
+main-image: /container.png
 ---

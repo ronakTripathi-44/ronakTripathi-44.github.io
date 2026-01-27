@@ -16,10 +16,6 @@ This project investigates the adaptive reuse of decommissioned shipping containe
 
 Shipping containers were selected as a case study due to their inherent structural robustness, modularity, and global availability as post-use assets. Rather than approaching the project as a ground-up architectural design, the focus is placed on **asset reuse, retrofit strategies, and digital representation**, aligning with circular economy objectives.
 
-<!-- Image placeholder: Project hero render -->
-![Project Hero Image – Shipping Container Café](_projects/Shipping container retrofit/Aufzeichnung_cafe_retrofit.mp4)
-
-
 ---
 
 ## **Circular Economy Framework**
@@ -30,8 +26,6 @@ In this context, adaptive reuse represents a closed-loop strategy within the Era
 
 This project positions architectural retrofitting as a practical mechanism for closing material loops, demonstrating how waste goods can be transformed into functional spaces without incurring the embodied carbon costs associated with demolition and new construction.
 
-<!-- Image placeholder: Circular economy / Era of R & D diagram -->
-![Circular Economy Diagram – Era of R and Era of D](_projects/Shipping container retrofit/Image1.jpg)
 
 ---
 
@@ -41,8 +35,6 @@ An open-source Revit model of a shipping container café was used as a base refe
 
 The use of an existing BIM model reflects real-world circular design practice, where designers increasingly work with inherited assets, legacy data, and pre-existing structures rather than blank-slate conditions.
 
-<!-- Image placeholder: Revit model screenshot -->
-![Revit Model – Container Retrofit](_projects/Shipping container retrofit/Image2.jpg)
 
 ---
 
@@ -58,8 +50,7 @@ The project follows a structured digital pipeline to translate BIM data into hig
 
 Twinmotion was used to communicate design intent, materiality, and human scale, emphasizing how visualization tools can support sustainable design narratives and stakeholder engagement. The final renders aim to convey the social and environmental potential of adaptive reuse rather than purely formal expression.
 
-<!-- Image placeholder: Twinmotion render -->
-![Twinmotion Render – Exterior View](images/twinmotion_render_placeholder.jpg)
+
 
 ---
 
@@ -67,9 +58,8 @@ Twinmotion was used to communicate design intent, materiality, and human scale, 
 
 The following video demonstrates the Revit modelling environment used in this project, highlighting model adaptation, geometry cleanup, and preparation for visualization workflows.
 
-<!-- Video placeholder: Revit screen recording -->
 <video controls width="100%">
-  <source src="videos/revit_screen_recording_placeholder.mp4" type="video/mp4">
+  <source src="_projects/shipping-container-retrofit/Aufzeichnung_cafe_retrofit.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
@@ -79,8 +69,9 @@ The following video demonstrates the Revit modelling environment used in this pr
 
 This project demonstrates how circular economy theory can be operationalized through architectural retrofitting and digital workflows. By prioritizing reuse over replacement, the study highlights the role of designers in extending asset lifecycles and reducing environmental impact through informed, low-intervention strategies.
 
-
-![Final Outcome Montage](_projects/Shipping container retrofit/Image3.jpg)
+![Twinmotion render](_projects/shipping-container-retrofit/Image1.jpg)
+![Twinmotion render](_projects/shipping-container-retrofit/Image2.jpg)
+![Twinmotion render](_projects/shipping-container-retrofit/Image3.jpg)
 
 ---
 

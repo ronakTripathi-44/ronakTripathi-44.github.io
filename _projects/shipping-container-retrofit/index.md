@@ -59,7 +59,7 @@ Twinmotion was used to communicate design intent, materiality, and human scale, 
 The following video demonstrates the Revit modelling environment used in this project, highlighting model adaptation, geometry cleanup, and preparation for visualization workflows.
 
 <video controls width="100%">
-  <source src="_projects/shipping-container-retrofit/Aufzeichnung_cafe_retrofit.mp4" type="video/mp4">
+  <source src="Aufzeichnung_cafe_retrofit.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
@@ -69,9 +69,9 @@ The following video demonstrates the Revit modelling environment used in this pr
 
 This project demonstrates how circular economy theory can be operationalized through architectural retrofitting and digital workflows. By prioritizing reuse over replacement, the study highlights the role of designers in extending asset lifecycles and reducing environmental impact through informed, low-intervention strategies.
 
-![Twinmotion render](_projects/shipping-container-retrofit/Image1.jpg)
-![Twinmotion render](_projects/shipping-container-retrofit/Image2.jpg)
-![Twinmotion render](_projects/shipping-container-retrofit/Image3.jpg)
+![Twinmotion render1](Image1.jpg)
+![Twinmotion render2](Image2.jpg)
+![Twinmotion render3](Image3.jpg)
 
 ---
 

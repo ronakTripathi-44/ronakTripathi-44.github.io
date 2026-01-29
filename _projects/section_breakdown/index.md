@@ -7,7 +7,7 @@ skills:
 - Documentation
 - Rendering and visualization
 
-main-image:
+main-image: /main_image.png
 ---
 
 ## Project Overview

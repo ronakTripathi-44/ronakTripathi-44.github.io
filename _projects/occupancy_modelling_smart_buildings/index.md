@@ -1,15 +1,17 @@
 ---
 layout: post
 title: MACHINE LEARNING IMPLEMENTATION IN SMART BUILDING
-description:  This paper addresses this challenge by evaluating three modeling approaches that represent different strategies for transforming occupancy data into actionable intelligence. Each approach embodies a different philosophy: ABM seeks to understand the micro-level behaviors that generate macro-level patterns; kNN leverages historical patterns to predict future states; and Markov Chains model the stochastic nature of occupancy transitions. Together, they offer an option to have strategies and a perspective on what we would call the "whole life cycle" of occupancy information—from data collection through modeling to application.
-skills: 
-- Machine Learning
-- Agent Based Modelling
-- Object oriented programming
-- Smart building applications
-
+description: |
+  This paper addresses this challenge by evaluating three modeling approaches that represent different strategies for transforming occupancy data into actionable intelligence. Each approach embodies a different philosophy ABM seeks to understand the micro-level behaviors that generate macro-level patterns; kNN leverages historical patterns to predict future states; and Markov Chains model the stochastic nature of occupancy transitions. Together, they offer an option to have strategies and a perspective on what we would call the "whole life cycle" of occupancy information—from data collection through modeling to application.
+skills:
+  - Machine Learning
+  - Agent Based Modelling
+  - Object oriented programming
+  - Smart building applications
 main-image: /image_5.png
 ---
+
+
 
 
 ## The Energy Challenge in Modern Buildings

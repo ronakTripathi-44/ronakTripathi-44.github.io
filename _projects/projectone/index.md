@@ -162,14 +162,31 @@ The sensitivity heatmap indicates that uncertainty in material performance incre
 
 ---
 
-## Analysis Workflow
+## Scatterplot matrix
+This scatterplot matrix highlights the complex interactions between material properties in 
+asphalt mixtures with varying RAP percentages. As RAP content increases, there is a general decrease 
+in both compressive and flexural strength, accompanied by improved rutting resistance and a modest 
+rise in cost. However, high RAP levels introduce significant variability in performance, making lower 
+RAP percentages more predictable and reliable for certain applications. These findings suggest that 
+while RAP offers economic and environmental benefits, its impact on material performance, 
+particularly in terms of strength, should be carefully considered in pavement design decisions
 
 <p align="center">
   <img src="/_projects/projectone/pairwise-scatterplot-workflow.png" width="900">
 </p>
 
-
-The workflow integrates probabilistic sampling, performance modeling, and visualization to support transparent and reproducible decision-making.
+- Increasing RAP percentages (especially beyond 50%) lead to greater 
+performance variability, particularly in terms of rutting resistance and flexural strength.
+-The 25% RAP mixtures appear to offer the most consistent 
+performance, striking a balance between strength, rutting resistance, and cost.
+-Higher RAP percentages (75% and 100%) show increased variability 
+in compressive strength and rutting resistance, indicating trade-offs in predictability when 
+maximizing recycled content.
+-50% RAP offers a balance between cost savings and acceptable 
+performance, making it an especially viable choice.
+-The negative correlation between cost and rutting resistance demonstrates that high 
+RAP content can support circular economy goals by reducing costs and resource usage, 
+especially in less demanding applications. 
 
 ---
 ## Discussion

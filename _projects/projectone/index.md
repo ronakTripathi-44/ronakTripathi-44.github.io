@@ -41,7 +41,10 @@ reduce both environmental and economic costs associated with road construction. 
 these benefits, the reuse of such materials is often underutilized due to uncertainties about their 
 performance following degradation. 
 
-![Circular economy framework](/_projects/projectone/stahel_book.png)
+<p align="center">
+  <img src="/_projects/projectone/stahel_book.png" width="900">
+</p>
+
 
 
 This study aims to develop a reliable decision-making framework to guide the reuse of recycled 
@@ -121,7 +124,10 @@ visualization formats provides flexibility in presentation style, facilitating t
 to support the decision-making process, particularly in the context of promoting circular economy 
 practices. The histograms for each variable of the simulation can be found in the Appendix.
 
-![Compressive vs Flexural Strength](/_projects/projectone/compressive-vs-flexural.png)
+<p align="center">
+  <img src="/_projects/projectone/compressive-vs-flexural.png" width="900">
+</p>
+
 
 A strong positive correlation was observed between **compressive strength and flexural strength** for both virgin and recycled asphalt mixtures. While recycled mixtures exhibited slightly reduced strength levels, the overall trend suggests that RAPs can meet structural performance requirements, particularly at lower replacement ratios.
 
@@ -129,7 +135,10 @@ A strong positive correlation was observed between **compressive strength and fl
 
 ## Cost–Performance Trade-Offs
 
-![Cost vs Compressive Strength](/_projects/projectone/cost-vs-compressive.png)
+<p align="center">
+  <img src="/_projects/projectone/cost-vs-compressive.png" width="900">
+</p>
+
 
 Scatterplot analysis revealed increased variability in cost and performance at higher RAP percentages:
 
@@ -143,7 +152,11 @@ These results highlight the **economic advantages of RAP utilization**, while al
 
 ## Sensitivity Analysis
 
-![Sensitivity heatmap](/_projects/projectone/heatmap.png)
+<p align="center">
+  <img src="/_projects/projectone/heatmap.png" width="900">
+</p>
+
+
 
 The sensitivity heatmap indicates that uncertainty in material performance increases with higher RAP percentages. This reinforces the importance of **risk-based thresholds** when incorporating recycled materials into structural pavement design.
 
@@ -151,7 +164,10 @@ The sensitivity heatmap indicates that uncertainty in material performance incre
 
 ## Analysis Workflow
 
-![Pairwise scatterplot workflow](/_projects/projectone/pairwise-scatterplot-workflow.png)
+<p align="center">
+  <img src="/_projects/projectone/pairwise-scatterplot-workflow.png" width="900">
+</p>
+
 
 The workflow integrates probabilistic sampling, performance modeling, and visualization to support transparent and reproducible decision-making.
 

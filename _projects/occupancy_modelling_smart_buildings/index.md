@@ -41,7 +41,6 @@ The practical implementation of occupancy models depends critically on sensor in
 Recent advances in Internet of Things (IoT) technology have enabled dense, low-cost sensor networks that provide rich, multi-modal data streams. As noted by Yang et al. (2016) in their comprehensive review, the integration of diverse sensor types—including passive infrared, acoustic, and environmental sensors—has dramatically improved occupancy detection accuracy while reducing privacy concerns associated with video surveillance.
 Philosophical Underpinnings are also quite interesting to me, even beyond technical implementation, occupancy modeling raises profound questions about the nature of models and their relationship to reality. George Box’s famous dictum—”All models are wrong, but some are useful”—reminds us that the value of a model lies not in its absolute truth but in its practical utility. This pragmatic perspective guides our comparative approach: we seek not the “correct” model but rather models that prove useful for specific applications. Professor Vervaeke’s concept of “relevance realization” provides a cognitive framework for understanding how building systems might prioritize certain information flows over others. In resource-constrained environments—whether computational or attentional—the ability to focus on relevant patterns represents a critical advantage.
 
-![Figure1](/_projects/occupancy_modelling_smart_buildings/image_2.png)
 ---
 
 ## From Raw Data to Actionable Intelligence
@@ -67,6 +66,7 @@ Recognizing the challenges of obtaining extensive, high-quality real-world occup
 4. Sensor Noise: Realistic measurement errors simulating practical sensor limitations.
 
 The data spans 60 days with 15-minute resolution, resulting in 5,760 time slots—sufficient for robust model training and validation while maintaining computational tractability.
+![Figure1](/_projects/occupancy_modelling_smart_buildings/image_2.png)
 
 ---
 
@@ -90,21 +90,6 @@ These `.pkl` files allow direct model loading without retraining, enabling:
 
 All code was implemented in **Python 3.11** with deterministic seeds for reproducibility.
 
-![Figure3](/_projects/occupancy_modelling_smart_buildings/image_3.png)
-
----
-
-## Synthetic Data Generation
-
-To address privacy and real-world data limitations, a synthetic dataset was generated with:
-
-- 60 days  
-- 15-minute intervals  
-- Weekday/weekend differentiation  
-- Stochastic events (meetings, variability)  
-- Simulated sensor noise  
-
-Total time steps: **5,760**
 
 ---
 
@@ -155,7 +140,7 @@ Serialized file available:
 
 The Markov model demonstrated exceptional computational efficiency.
 
-![Figure](/output.png)
+![Figure2](/_projects/occupancy_modelling_smart_buildings/output.png)
 
 ---
 
@@ -170,7 +155,7 @@ The Markov Chain model showed particular strength in modeling occupancy transiti
 | Markov | 0.2258 | 1.67 | 1.12 | 22.8% |
 | ABM    | 0.3468 | 2.13 | 1.48 | 31.4% |
 
-![Figure4](/_projects/occupancy_modelling_smart_buildings/image_3.png)
+![Figure3](/_projects/occupancy_modelling_smart_buildings/image_3.png)
 
 Mean Occupancy Profiles
 
@@ -179,6 +164,9 @@ Figure 1 illustrates the mean occupancy profiles predicted by each model compare
 Temporal Distribution Patterns
 
 The distribution of first arrival times (Figure 2) reveals distinctive patterns: the Markov model most accurately captures the bimodal distribution observed in ground truth data (peaks at 8:00 and 9:00), reflecting the common pattern of both early and standard arrival times. The kNN model produces a smoother, unimodal distribution, while the ABM shows excessive variability. For last departure times (Figure 3), all models struggle to capture the long tail observed in ground truth data (some occupants remaining until 19:00 or later). This highlights a fundamental challenge in occupancy modeling: rare but important events require specialized handling, whether through outlier-aware algorithms. 
+
+
+![Figure4](/_projects/occupancy_modelling_smart_buildings/image_3.png)
 
 ---
 
@@ -247,30 +235,50 @@ In an era of climate crisis and resource constraints, such intelligent building 
 
 ## Implementation Snippets (Jupyter Notebook)
 
-```python
-# ============================
-# Data Loading
-# ============================
+'''python
+"""
+Complete Building Occupancy Modeling Study - WORKING VERSION
+Authors: Based on methodology from Chen & Jiang (2018)
+Implementation: Working with ABM, kNN, and Markov Chain models, no GAN model implemented because that is a major project on its own.
+Date: 04.02.2026, Berlin
+"""
 
+# Building Occupancy Modeling Study - Main Imports
+import numpy as np
 import pandas as pd
-import pickle
+import matplotlib.pyplot as plt
+from datetime import datetime, timedelta
+import json
+import pickle  # For saving models
+import warnings
+import os
+warnings.filterwarnings('ignore')
 
-data = pd.read_csv("occupancy_data.csv")
+# Machine Learning
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.model_selection import GridSearchCV, TimeSeriesSplit
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import mean_squared_error, mean_absolute_error
 
-with open("knn_model.pkl", "rb") as f:
-    knn_model = pickle.load(f)
+# Statistics
+from scipy import stats
 
-with open("markov_model.pkl", "rb") as f:
-    markov_model = pickle.load(f)
+# Set paths for saving models
+MODEL_DIR = "saved_models"
+os.makedirs(MODEL_DIR, exist_ok=True)
 
-print("Models loaded successfully.")
+np.random.seed(42)
+print("✓ Libraries imported")
+print(f"✓ Model directory: {MODEL_DIR}")
 '''
----
+✓ Libraries imported
+✓ Model directory: saved_models
+
+
 
 ## References
-References
 
-   1. Agarwal, Y., Balaji, B., Gupta, R., Lyles, J., Wei, M., & Weng, T. (2010). Occupancy-driven energy management for smart building automation. Proceedings of the 2nd ACM Workshop on Embedded Sensing Systems for Energy-Efficiency in Building, 1-6.
+    1. Agarwal, Y., Balaji, B., Gupta, R., Lyles, J., Wei, M., & Weng, T. (2010). Occupancy-driven energy management for smart building automation. Proceedings of the 2nd ACM Workshop on Embedded Sensing Systems for Energy-Efficiency in Building, 1-6.
 
     2. Box, G. E. P. (1976). Science and statistics. Journal of the American Statistical Association, 71(356), 791-799.
 

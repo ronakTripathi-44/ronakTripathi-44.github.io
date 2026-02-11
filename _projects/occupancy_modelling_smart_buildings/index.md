@@ -8,7 +8,7 @@ skills:
   - Agent Based Modelling
   - Object Oriented Programming
   - Smart Building Applications
-main-image: /_projects/occupancy_modelling_smart_buildings/image_5.png
+main-image: /image_5.png
 ---
 
 ## The Energy Challenge in Modern Buildings
@@ -21,10 +21,6 @@ Accurate occupancy modeling enables adaptive control strategies capable of deliv
 - 35–75% lighting energy savings
 
 Occupancy modeling represents a critical frontier in this domain. As Wang et al. (2018) demonstrated in their comprehensive review, accurate prediction of building occupancy can lead to energy savings of 15-30% in HVAC systems and 35-75% in lighting systems through adaptive control strategies. These figures are not merely academic; they represent tangible reductions in operational costs and environmental impact that scale across global building stock.
-
-
-
-![Figure1](/_projects/occupancy_modelling_smart_buildings/image_1.png)
 
 ---
 
@@ -45,7 +41,7 @@ The practical implementation of occupancy models depends critically on sensor in
 Recent advances in Internet of Things (IoT) technology have enabled dense, low-cost sensor networks that provide rich, multi-modal data streams. As noted by Yang et al. (2016) in their comprehensive review, the integration of diverse sensor types—including passive infrared, acoustic, and environmental sensors—has dramatically improved occupancy detection accuracy while reducing privacy concerns associated with video surveillance.
 Philosophical Underpinnings are also quite interesting to me, even beyond technical implementation, occupancy modeling raises profound questions about the nature of models and their relationship to reality. George Box’s famous dictum—”All models are wrong, but some are useful”—reminds us that the value of a model lies not in its absolute truth but in its practical utility. This pragmatic perspective guides our comparative approach: we seek not the “correct” model but rather models that prove useful for specific applications. Professor Vervaeke’s concept of “relevance realization” provides a cognitive framework for understanding how building systems might prioritize certain information flows over others. In resource-constrained environments—whether computational or attentional—the ability to focus on relevant patterns represents a critical advantage.
 
-
+![Figure2](/_projects/occupancy_modelling_smart_buildings/image_2.png)
 ---
 
 ## From Raw Data to Actionable Intelligence
@@ -62,7 +58,7 @@ This study evaluates three complementary modeling philosophies:
 - **k-Nearest Neighbors (kNN)** → historical similarity  
 - **Markov Chains** → probabilistic temporal transitions  
 
-![Figure2](/_projects/occupancy_modelling_smart_buildings/image_2.png)
+
 
 Recognizing the challenges of obtaining extensive, high-quality real-world occupancy data while protecting occupant privacy, I tried to code a sophisticated synthetic data generation system. My approach builds upon the methodology described by Feng et al. (2015) for occupancy simulation but extends it to incorporate: 
 1. Temporal Patterns: Distinct weekday, Saturday, and Sunday patterns with realistic arrival/departure distributions.
@@ -110,8 +106,6 @@ To address privacy and real-world data limitations, a synthetic dataset was gene
 
 Total time steps: **5,760**
 
-![Figure4](/_projects/occupancy_modelling_smart_buildings/output.png)
-
 ---
 
 ## Modeling Approaches
@@ -127,7 +121,6 @@ Each occupant is modeled as an autonomous agent with:
 
 ABM captures emergent macro-patterns from micro-rules.
 
-![Figure5](/_projects/occupancy_modelling_smart_buildings/image_4.png)
 
 ---
 
@@ -145,7 +138,6 @@ kNN achieved the **lowest prediction error**.
 Serialized file available:
 `knn_model.pkl`
 
-![Figure6](/_projects/occupancy_modelling_smart_buildings/model_comparison.png)
 
 ---
 
@@ -163,7 +155,7 @@ Serialized file available:
 
 The Markov model demonstrated exceptional computational efficiency.
 
-![Figure7](/_projects/occupancy_modelling_smart_buildings/output_2.png)
+![Figure](output.png)
 
 ---
 
@@ -178,7 +170,7 @@ The Markov Chain model showed particular strength in modeling occupancy transiti
 | Markov | 0.2258 | 1.67 | 1.12 | 22.8% |
 | ABM    | 0.3468 | 2.13 | 1.48 | 31.4% |
 
-![Figure8](/_projects/occupancy_modelling_smart_buildings/energy_savings_analysis.png)
+![Figure](/image_3.png)
 
 Mean Occupancy Profiles
 
@@ -208,8 +200,7 @@ A tiered smart building architecture can be practically recommended:
 - kNN → Server-level forecasting  
 - ABM → Strategic simulation  
 
-![Figure9](/_projects/occupancy_modelling_smart_buildings/roi_analysis.png)
-
+![Figure](/image_4.png)
 ---
 
 ## Full Dataset and Outputs
@@ -233,9 +224,8 @@ Professor Vervaeke’s concept of “relevance realization” finds concrete exp
 -ABM: Prioritizes causal mechanisms, seeking to understand why occupants behave as they do.
 
 This diversity suggests that truly intelligent building systems might benefit from what cognitive scientists call “complementary learning systems”—multiple representations that together provide more robust understanding than any single approach.
-![Figure10](/_projects/occupancy_modelling_smart_buildings/work_sample.png)
 
-### Practical Deployment Considerations and Limitations
+## Practical Deployment Considerations and Limitations
 
 Moving from laboratory models to real-world deployment involves several practical challenges:
 

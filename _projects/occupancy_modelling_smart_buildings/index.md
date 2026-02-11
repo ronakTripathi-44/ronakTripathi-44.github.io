@@ -165,9 +165,6 @@ Temporal Distribution Patterns
 
 The distribution of first arrival times (Figure 2) reveals distinctive patterns: the Markov model most accurately captures the bimodal distribution observed in ground truth data (peaks at 8:00 and 9:00), reflecting the common pattern of both early and standard arrival times. The kNN model produces a smoother, unimodal distribution, while the ABM shows excessive variability. For last departure times (Figure 3), all models struggle to capture the long tail observed in ground truth data (some occupants remaining until 19:00 or later). This highlights a fundamental challenge in occupancy modeling: rare but important events require specialized handling, whether through outlier-aware algorithms. 
 
-
-![Figure4](/_projects/occupancy_modelling_smart_buildings/image_3.png)
-
 ---
 
 ## Computational Efficiency & ROI
@@ -228,20 +225,17 @@ The limitations are obvious given the academic nature of my study project but no
 
 This comprehensive comparative study of building occupancy modeling approaches reveals a landscape rich with complementary strengths and trade-offs. The kNN model emerges as the most accurate for pattern-based prediction, the Markov Chain as the most efficient for temporal modeling, and the ABM as the most insightful for understanding behavioral dynamics. Our findings reinforce George Box’s wisdom: while no model perfectly captures the complexity of real-world occupancy, each proves useful for specific applications. The kNN model’s accuracy makes it valuable for energy optimization systems, the Markov model’s efficiency suits real-time control applications, and the ABM’s interpretability supports human decision-making and scenario planning.
 
-The journey from raw sensor data to actionable intelligence—what Professor Hartmann describes as the transformation of “data” to “information” to “actionable intelligence”—requires careful model selection tailored to specific contexts and objectives. As Professor Vervaeke reminds us, relevance realization is not merely a technical challenge but a cognitive one: we must identify not just what can be modeled, but what should be modeled to support human flourishing in built environments.Looking forward, we envision next-generation building systems that integrate multiple modeling approaches in adaptive frameworks, learning not just occupancy patterns but also which models prove most useful in different contexts. Such systems would embody what might be called “cognitive building intelligence”—the capacity not just to predict but to understand and adapt to the dynamic human environments they serve.
+The journey from raw sensor data to actionable intelligence—what Professor Hartmann describes as the transformation of “data” to “information” to “actionable intelligence”—requires careful model selection tailored to specific contexts and objectives. As Professor Vervaeke reminds us, relevance realization is not merely a technical challenge but a cognitive one: we must identify not just what can be modeled, but what should be modeled to support human flourishing in built environments.Looking forward, we envision next-generation building systems that integrate multiple modeling approaches in adaptive frameworks, learning not just occupancy patterns but also which models prove most useful in different contexts. Such systems would embody what might be called “cognitive building intelligence”—the capacity not just to predict but to understand and adapt to the dynamic human environments they serve. In an era of climate crisis and resource constraints, such intelligent building systems represent not merely technological advancement but ethical imperative. By optimizing energy use while maintaining occupant comfort, they contribute to both environmental sustainability and human well-being—a dual benefit that captures the essential promise of smart building technology.
 
-In an era of climate crisis and resource constraints, such intelligent building systems represent not merely technological advancement but ethical imperative. By optimizing energy use while maintaining occupant comfort, they contribute to both environmental sustainability and human well-being—a dual benefit that captures the essential promise of smart building technology.
 ---
 
 ## Implementation Snippets (Jupyter Notebook)
 
 '''python
-"""
 Complete Building Occupancy Modeling Study - WORKING VERSION
 Authors: Based on methodology from Chen & Jiang (2018)
 Implementation: Working with ABM, kNN, and Markov Chain models, no GAN model implemented because that is a major project on its own.
 Date: 04.02.2026, Berlin
-"""
 
 # Building Occupancy Modeling Study - Main Imports
 import numpy as np

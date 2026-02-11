@@ -66,7 +66,11 @@ Recognizing the challenges of obtaining extensive, high-quality real-world occup
 4. Sensor Noise: Realistic measurement errors simulating practical sensor limitations.
 
 The data spans 60 days with 15-minute resolution, resulting in 5,760 time slots—sufficient for robust model training and validation while maintaining computational tractability.
-![Figure1](/_projects/occupancy_modelling_smart_buildings/image_2.png)
+
+![Figure1]
+<p align="center">
+  <img src="/_projects/occupancy_modelling_smart_buildings/image_2.png" width="900">
+</p>
 
 ---
 
@@ -140,8 +144,11 @@ Serialized file available:
 
 The Markov model demonstrated exceptional computational efficiency.
 
-![Figure2](/_projects/occupancy_modelling_smart_buildings/output.png)
-
+![Figure2]
+<p align="center">
+  <img src="/_projects/occupancy_modelling_smart_buildings/output.png" width="900">
+</p>
+![Figure2]
 ---
 
 ## Model Performance Summary
@@ -155,7 +162,10 @@ The Markov Chain model showed particular strength in modeling occupancy transiti
 | Markov | 0.2258 | 1.67 | 1.12 | 22.8% |
 | ABM    | 0.3468 | 2.13 | 1.48 | 31.4% |
 
-![Figure3](/_projects/occupancy_modelling_smart_buildings/image_3.png)
+![Figure3]
+<p align="center">
+  <img src="/_projects/occupancy_modelling_smart_buildings/image_3.png" width="900">
+</p> ![Figure3]
 
 Mean Occupancy Profiles
 
@@ -185,7 +195,11 @@ A tiered smart building architecture can be practically recommended:
 - kNN → Server-level forecasting  
 - ABM → Strategic simulation  
 
-![Figure8](/_projects/occupancy_modelling_smart_buildings/image_4.png)
+![Figure4]
+<p align="center">
+  <img src="/_projects/occupancy_modelling_smart_buildings/image_4.png" width="900">
+</p> ![Figure4]
+
 ---
 
 ## Full Dataset and Outputs

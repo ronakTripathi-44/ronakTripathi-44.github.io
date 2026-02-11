@@ -231,11 +231,11 @@ The journey from raw sensor data to actionable intelligence—what Professor Har
 
 ## Implementation Snippets (Jupyter Notebook)
 
-'''python
-Complete Building Occupancy Modeling Study - WORKING VERSION
-Authors: Based on methodology from Chen & Jiang (2018)
-Implementation: Working with ABM, kNN, and Markov Chain models, no GAN model implemented because that is a major project on its own.
-Date: 04.02.2026, Berlin
+```
+  Complete Building Occupancy Modeling Study - WORKING VERSION
+  Authors: Based on methodology from Chen & Jiang (2018)
+  Implementation: Working with ABM, kNN, and Markov Chain models, no GAN model implemented because that is a major project on its own.
+  Date: 04.02.2026, Berlin
 
 # Building Occupancy Modeling Study - Main Imports
 import numpy as np
@@ -264,17 +264,500 @@ os.makedirs(MODEL_DIR, exist_ok=True)
 np.random.seed(42)
 print("✓ Libraries imported")
 print(f"✓ Model directory: {MODEL_DIR}")
-'''
+```
 ✓ Libraries imported
 ✓ Model directory: saved_models
 
+```
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from datetime import datetime, timedelta
+import json
+import pickle
+import os
+import warnings
+warnings.filterwarnings('ignore')
+
+# Machine Learning
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import mean_squared_error, mean_absolute_error
+
+# Statistics
+from scipy import stats
+
+# Set paths
+MODEL_DIR = "saved_models"
+os.makedirs(MODEL_DIR, exist_ok=True)
+
+np.random.seed(42)
+
+print("="*60)
+print("BUILDING OCCUPANCY MODELING STUDY")
+print("="*60)
+print(f"✓ Libraries imported")
+print(f"✓ Model directory: {MODEL_DIR}")
+
+# Configuration
+class ModelConfig:
+    def __init__(self):
+        self.days = 60
+        self.resolution_minutes = 15
+        self.max_occupancy = 10
+        self.train_ratio = 0.7
+        self.monte_carlo_runs = 20
+        self.time_slots_per_day = (24 * 60) // self.resolution_minutes
+        self.total_time_slots = self.days * self.time_slots_per_day
+
+config = ModelConfig()
+print(f"\nConfiguration:")
+print(f"- Days: {config.days}")
+print(f"- Resolution: {config.resolution_minutes} minutes")
+print(f"- Max occupancy: {config.max_occupancy}")
+print(f"- Time slots per day: {config.time_slots_per_day}")
+
+# Data Generation
+print("\n" + "="*60)
+print("DATA GENERATION")
+print("="*60)
+
+class OccupancyDataGenerator:
+    def __init__(self, config):
+        self.config = config
+    
+    def generate_data(self):
+        """Generate synthetic occupancy data"""
+        print("Generating occupancy data...")
+        
+        time_slots_per_day = config.time_slots_per_day
+        resolution = config.resolution_minutes
+        
+        time_slots = []
+        occupancy_counts = []
+        timestamps = []
+        hour_of_day = []
+        day_of_week = []
+        weekday_names = []
+        
+        start_date = datetime(2024, 1, 1)
+        
+        for day in range(config.days):
+            current_date = start_date + timedelta(days=day)
+            weekday = current_date.weekday()
+            weekday_name = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 
+                           'Friday', 'Saturday', 'Sunday'][weekday]
+            
+            if weekday < 5:
+                max_occ = config.max_occupancy
+            elif weekday == 5:
+                max_occ = max(3, config.max_occupancy // 4)
+            else:
+                max_occ = max(1, config.max_occupancy // 8)
+            
+            # Generate daily pattern
+            daily_occupancy = np.zeros(time_slots_per_day)
+            
+            if weekday < 5:  # Weekday
+                for slot in range(time_slots_per_day):
+                    hour = (slot * resolution) / 60
+                    if 8 <= hour <= 18:  # Office hours
+                        if 8 <= hour < 10:
+                            prob = 0.4
+                        elif 10 <= hour < 12:
+                            prob = 0.8
+                        elif 12 <= hour < 13:
+                            prob = 0.3
+                        elif 13 <= hour < 16:
+                            prob = 0.7
+                        elif 16 <= hour <= 18:
+                            prob = 0.5
+                        else:
+                            prob = 0.1
+                        
+                        # Add randomness
+                        prob = np.clip(prob + np.random.normal(0, 0.1), 0, 1)
+                        daily_occupancy[slot] = int(round(prob * max_occ))
+            
+            elif weekday == 5:  # Saturday
+                for slot in range(time_slots_per_day):
+                    hour = (slot * resolution) / 60
+                    if 10 <= hour <= 14:
+                        daily_occupancy[slot] = np.random.choice([0, 1, 2], p=[0.7, 0.2, 0.1])
+            
+            # Sunday mostly empty
+            
+            # Store daily data
+            for slot in range(time_slots_per_day):
+                time_slots.append(day * time_slots_per_day + slot)
+                occupancy_counts.append(daily_occupancy[slot])
+                slot_time = current_date + timedelta(minutes=slot * resolution)
+                timestamps.append(slot_time)
+                hour = (slot * resolution) / 60
+                hour_of_day.append(hour)
+                day_of_week.append(weekday)
+                weekday_names.append(weekday_name)
+        
+        # Create DataFrame
+        df = pd.DataFrame({
+            'timestamp': timestamps,
+            'time_slot': time_slots,
+            'occupancy': occupancy_counts,
+            'hour_of_day': hour_of_day,
+            'day_of_week': day_of_week,
+            'weekday': weekday_names
+        })
+        
+        # Add features
+        df['hour_sin'] = np.sin(2 * np.pi * df['hour_of_day'] / 24)
+        df['hour_cos'] = np.cos(2 * np.pi * df['hour_of_day'] / 24)
+        df['day_sin'] = np.sin(2 * np.pi * df['day_of_week'] / 7)
+        df['day_cos'] = np.cos(2 * np.pi * df['day_of_week'] / 7)
+        
+        # Add lags
+        df['occupancy_lag1'] = df['occupancy'].shift(1).fillna(0)
+        df['occupancy_lag2'] = df['occupancy'].shift(2).fillna(0)
+        
+        print(f"✓ Generated {len(df)} time slots")
+        print(f"✓ Occupancy range: {df['occupancy'].min()} to {df['occupancy'].max()}")
+        
+        return df
+
+# Generate data
+generator = OccupancyDataGenerator(config)
+data = generator.generate_data()
+
+# Save data
+data_path = os.path.join(MODEL_DIR, "occupancy_data.csv")
+data.to_csv(data_path, index=False)
+print(f"✓ Data saved to {data_path}")
+
+print("\n" + "="*60)
+print("STUDY READY!")
+print("="*60)
+print("You can now run the model training and evaluation cells.")
+```
+============================================================
+BUILDING OCCUPANCY MODELING STUDY
+============================================================
+✓ Libraries imported
+✓ Model directory: saved_models
+
+Configuration:
+- Days: 60
+- Resolution: 15 minutes
+- Max occupancy: 10
+- Time slots per day: 96
+
+============================================================
+DATA GENERATION
+============================================================
+Generating occupancy data...
+✓ Generated 5760 time slots
+✓ Occupancy range: 0.0 to 10.0
+✓ Data saved to saved_models\occupancy_data.csv
+
+============================================================
+STUDY READY!
+============================================================
+You can now run the model training and evaluation cells.
+
+```
+class KNNOccupancyModel:
+    def __init__(self, config):
+        self.config = config
+        self.model = None
+        self.scaler = StandardScaler()
+        self.feature_columns = ['hour_sin', 'hour_cos', 'day_sin', 'day_cos', 
+                               'hour_of_day', 'day_of_week', 'occupancy_lag1', 'occupancy_lag2']
+    
+    def save(self, filename="knn_model.pkl"):
+        """Save the trained model"""
+        if self.model is None:
+            raise ValueError("Model not trained yet")
+        
+        model_data = {
+            'model': self.model,
+            'scaler': self.scaler,
+            'feature_columns': self.feature_columns
+        }
+        
+        with open(os.path.join(MODEL_DIR, filename), 'wb') as f:
+            pickle.dump(model_data, f)
+        
+        print(f"✓ kNN model saved to {MODEL_DIR}/{filename}")
+    
+    def load(self, filename="knn_model.pkl"):
+        """Load a trained model"""
+        try:
+            with open(os.path.join(MODEL_DIR, filename), 'rb') as f:
+                model_data = pickle.load(f)
+            
+            self.model = model_data['model']
+            self.scaler = model_data['scaler']
+            self.feature_columns = model_data['feature_columns']
+            
+            print(f"✓ kNN model loaded from {MODEL_DIR}/{filename}")
+            return True
+        except FileNotFoundError:
+            print(f"✗ No saved model found at {MODEL_DIR}/{filename}")
+            return False
+    
+    def train(self, train_data, save=True):
+        """Train the model"""
+        print("Training kNN model...")
+        
+        # Prepare features
+        X = train_data[self.feature_columns].values
+        y = train_data['occupancy'].values
+        
+        # Scale features
+        X_scaled = self.scaler.fit_transform(X)
+        
+        # Train model (simplified for speed)
+        self.model = KNeighborsRegressor(
+            n_neighbors=5,
+            weights='distance',
+            metric='euclidean'
+        )
+        self.model.fit(X_scaled, y)
+        
+        print(f"✓ kNN model trained on {len(X)} samples")
+        
+        if save:
+            self.save()
+        
+        return self.model
+    
+    def predict(self, X):
+        """Make predictions"""
+        if self.model is None:
+            raise ValueError("Model not trained or loaded")
+        
+        X_scaled = self.scaler.transform(X[self.feature_columns].values)
+        predictions = self.model.predict(X_scaled)
+        predictions = np.round(predictions).astype(int)
+        predictions = np.clip(predictions, 0, self.config.max_occupancy)
+        
+        return predictions
+
+# Create kNN model instance
+knn_model = KNNOccupancyModel(config)
+```
+class MarkovOccupancyModel:
+    def __init__(self, config):
+        self.config = config
+        self.transition_matrices = None
+        self.state_range = None
+    
+    def save(self, filename="markov_model.pkl"):
+        """Save the trained model"""
+        if self.transition_matrices is None:
+            raise ValueError("Model not trained yet")
+        
+        model_data = {
+            'transition_matrices': self.transition_matrices,
+            'state_range': self.state_range
+        }
+        
+        with open(os.path.join(MODEL_DIR, filename), 'wb') as f:
+            pickle.dump(model_data, f)
+        
+        print(f"✓ Markov model saved to {MODEL_DIR}/{filename}")
+    
+    def load(self, filename="markov_model.pkl"):
+        """Load a trained model"""
+        try:
+            with open(os.path.join(MODEL_DIR, filename), 'rb') as f:
+                model_data = pickle.load(f)
+            
+            self.transition_matrices = model_data['transition_matrices']
+            self.state_range = model_data['state_range']
+            
+            print(f"✓ Markov model loaded from {MODEL_DIR}/{filename}")
+            return True
+        except FileNotFoundError:
+            print(f"✗ No saved model found at {MODEL_DIR}/{filename}")
+            return False
+    
+    def train(self, train_data, save=True):
+        """Train the model"""
+        print("Training Markov Chain model...")
+        
+        occupancy = train_data['occupancy'].values
+        hours = train_data['hour_of_day'].values
+        
+        # Determine state range
+        min_state = int(occupancy.min())
+        max_state = int(occupancy.max())
+        self.state_range = (min_state, max_state)
+        num_states = max_state - min_state + 1
+        
+        # Initialize transition matrices
+        self.transition_matrices = {}
+        for hour in range(24):
+            self.transition_matrices[hour] = np.ones((num_states, num_states)) * 0.01
+        
+        # Count transitions
+        for i in range(len(occupancy) - 1):
+            current_state = int(occupancy[i]) - min_state
+            next_state = int(occupancy[i + 1]) - min_state
+            current_hour = int(hours[i])
+            
+            if 0 <= current_state < num_states and 0 <= next_state < num_states:
+                self.transition_matrices[current_hour][current_state, next_state] += 1
+        
+        # Normalize
+        for hour in range(24):
+            matrix = self.transition_matrices[hour]
+            row_sums = matrix.sum(axis=1, keepdims=True)
+            row_sums[row_sums == 0] = 1
+            self.transition_matrices[hour] = matrix / row_sums
+        
+        print(f"✓ Markov model trained with {num_states} states")
+        
+        if save:
+            self.save()
+        
+        return self
+    
+    def generate_sequence(self, days: int):
+        """Generate occupancy sequence"""
+        if self.transition_matrices is None:
+            raise ValueError("Model not trained or loaded")
+        
+        min_state, max_state = self.state_range
+        num_states = max_state - min_state + 1
+        time_slots = days * self.config.time_slots_per_day
+        
+        sequence = np.zeros(time_slots, dtype=int)
+        sequence[0] = num_states // 2  # Start with middle state
+        
+        for t in range(1, time_slots):
+            minutes = t * self.config.resolution_minutes
+            current_hour = int((minutes // 60) % 24)
+            
+            transition_matrix = self.transition_matrices[current_hour]
+            current_state = min(max(sequence[t-1], 0), num_states - 1)
+            
+            probs = transition_matrix[current_state]
+            next_state = np.random.choice(num_states, p=probs)
+            sequence[t] = next_state
+        
+        # Convert back to original scale
+        sequence = sequence + min_state
+        
+        return sequence# Create Markov model instance 
+        markov_model = MarkovOccupancyModel(config)
+
+        print("="*60)
+        print("MODEL TRAINING/LOADING")
+        print("="*60)
+
+        # Split data
+        split_idx = int(len(data) * config.train_ratio)
+        train_data = data.iloc[:split_idx]
+        test_data = data.iloc[split_idx:]
+        
+        print(f"Training data: {len(train_data)} samples")
+        print(f"Test data: {len(test_data)} samples")
+        
+        # Train or load kNN
+        print("\n1. kNN Model:")
+        if not knn_model.load():  # Try to load first
+            knn_model.train(train_data, save=True)  # Train if not found
+
+          # Train or load Markov
+          print("\n2. Markov Chain Model:")
+          if not markov_model.load():  # Try to load first
+              markov_model.train(train_data, save=True)  # Train if not found
+          
+          print("\n✓ All models ready!")
+          ```
+
+============================================================
+MODEL TRAINING/LOADING
+============================================================
+Training data: 4031 samples
+Test data: 1729 samples
+
+1. kNN Model:
+✗ No saved model found at saved_models/knn_model.pkl
+Training kNN model...
+✓ kNN model trained on 4031 samples
+✓ kNN model saved to saved_models/knn_model.pkl
+
+2. Markov Chain Model:
+✗ No saved model found at saved_models/markov_model.pkl
+Training Markov Chain model...
+✓ Markov model trained with 11 states
+✓ Markov model saved to saved_models/markov_model.pkl
+
+✓ All models ready!
+```
+print("="*60)
+print("EVALUATION METRICS")
+print("="*60)
+
+def calculate_all_metrics(true, pred, model_name):
+    """Calculate all metrics for a model"""
+    rmse = np.sqrt(mean_squared_error(true, pred))
+    mae = mean_absolute_error(true, pred)
+    
+    # MAPE (handle zeros)
+    mask = true != 0
+    if np.any(mask):
+        mape = np.mean(np.abs((true[mask] - pred[mask]) / true[mask])) * 100
+    else:
+        mape = 0
+    
+    # NRMSE
+    true_range = np.max(true) - np.min(true)
+    nrmse = rmse / true_range if true_range > 0 else 0
+    
+    return {
+        'Model': model_name,
+        'RMSE': rmse,
+        'MAE': mae,
+        'MAPE': mape,
+        'NRMSE': nrmse
+    }
+
+# Calculate metrics for each model
+results = []
+for name, pred in [('kNN', knn_pred), ('Markov', markov_pred), ('ABM', abm_pred)]:
+    metrics = calculate_all_metrics(ground_truth, pred, name)
+    results.append(metrics)
+
+# Create results DataFrame
+results_df = pd.DataFrame(results)
+print("\nModel Performance:")
+print("-"*40)
+print(results_df.to_string(index=False))
+
+# Save results
+results_df.to_csv(os.path.join(MODEL_DIR, "model_results.csv"), index=False)
+print(f"\n✓ Results saved to {MODEL_DIR}/model_results.csv")
+```
+============================================================
+EVALUATION METRICS
+============================================================
+
+Model Performance:
+----------------------------------------
+ Model     RMSE      MAE      MAPE    NRMSE
+   kNN 1.003178 0.448495 27.623260 0.100318
+Markov 3.344166 1.855903 84.469314 0.334417
+   ABM 3.421068 1.902778 95.525997 0.342107
+
+✓ Results saved to saved_models/model_results.csv
 
 
 ## References
 
-    1. Agarwal, Y., Balaji, B., Gupta, R., Lyles, J., Wei, M., & Weng, T. (2010). Occupancy-driven energy management for smart building automation. Proceedings of the 2nd ACM Workshop on Embedded Sensing Systems for Energy-Efficiency in Building, 1-6.
+  1. Agarwal, Y., Balaji, B., Gupta, R., Lyles, J., Wei, M., & Weng, T. (2010). Occupancy-driven energy management for smart building automation. Proceedings of the 2nd ACM Workshop on Embedded Sensing Systems for Energy-Efficiency in Building, 1-6.
 
-    2. Box, G. E. P. (1976). Science and statistics. Journal of the American Statistical Association, 71(356), 791-799.
+2. Box, G. E. P. (1976). Science and statistics. Journal of the American Statistical Association, 71(356), 791-799.
 
     3. Chen, Z., Xu, J., & Soh, Y. C. (2015). Modeling regular occupancy in commercial buildings using stochastic models. Energy and Buildings, 103, 216-223.
 

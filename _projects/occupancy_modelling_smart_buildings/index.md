@@ -41,7 +41,7 @@ The practical implementation of occupancy models depends critically on sensor in
 Recent advances in Internet of Things (IoT) technology have enabled dense, low-cost sensor networks that provide rich, multi-modal data streams. As noted by Yang et al. (2016) in their comprehensive review, the integration of diverse sensor types—including passive infrared, acoustic, and environmental sensors—has dramatically improved occupancy detection accuracy while reducing privacy concerns associated with video surveillance.
 Philosophical Underpinnings are also quite interesting to me, even beyond technical implementation, occupancy modeling raises profound questions about the nature of models and their relationship to reality. George Box’s famous dictum—”All models are wrong, but some are useful”—reminds us that the value of a model lies not in its absolute truth but in its practical utility. This pragmatic perspective guides our comparative approach: we seek not the “correct” model but rather models that prove useful for specific applications. Professor Vervaeke’s concept of “relevance realization” provides a cognitive framework for understanding how building systems might prioritize certain information flows over others. In resource-constrained environments—whether computational or attentional—the ability to focus on relevant patterns represents a critical advantage.
 
-![Figure2](/_projects/occupancy_modelling_smart_buildings/image_2.png)
+![Figure1](/_projects/occupancy_modelling_smart_buildings/image_2.png)
 ---
 
 ## From Raw Data to Actionable Intelligence
@@ -155,7 +155,7 @@ Serialized file available:
 
 The Markov model demonstrated exceptional computational efficiency.
 
-![Figure](output.png)
+![Figure](/output.png)
 
 ---
 
@@ -170,7 +170,7 @@ The Markov Chain model showed particular strength in modeling occupancy transiti
 | Markov | 0.2258 | 1.67 | 1.12 | 22.8% |
 | ABM    | 0.3468 | 2.13 | 1.48 | 31.4% |
 
-![Figure](/image_3.png)
+![Figure4](/_projects/occupancy_modelling_smart_buildings/image_3.png)
 
 Mean Occupancy Profiles
 
@@ -200,7 +200,7 @@ A tiered smart building architecture can be practically recommended:
 - kNN → Server-level forecasting  
 - ABM → Strategic simulation  
 
-![Figure](/image_4.png)
+![Figure8](/_projects/occupancy_modelling_smart_buildings/image_4.png)
 ---
 
 ## Full Dataset and Outputs

@@ -203,7 +203,7 @@ This project demonstrates a complete workflow:
 All visualizations are saved as PNG files.
 
 
-```Python
+
 """
 Multi Objective Optimization of Integrated Bridge and Road Maintenance
 with Parallel Coordinates and AHP based Decision Support
@@ -217,6 +217,11 @@ This project demonstrates a complete workflow:
 
 All visualizations are saved as PNG files.
 """
+```Python
+# =============================================================================
+# 1. Problem Data
+# =============================================================================
+
 
 import numpy as np
 import pandas as pd
@@ -225,6 +230,85 @@ from pymoo.algorithms.moo.nsga2 import NSGA2
 from pymoo.core.problem import Problem
 from pymoo.optimize import minimize
 from mpl_toolkits.mplot3d import Axes3D
+
+LIFETIME = 70
+
+# Bridge intervention parameters
+bridge = {
+    'SDO': {'range': (10, 20), 'duration': 7,   'cost': 5000,   'ideal': 15},
+    'M':   {'range': (3, 8),   'duration': 2,   'cost': 2000,   'ideal': 5},
+    'DR':  {'range': (20, 35), 'duration': 21,  'cost': 50000,  'ideal': 30}
+}
+
+# Road intervention parameters
+road = {
+    'SDO.r': {'range': (12, 25), 'duration': 7,  'cost': 6000,   'ideal': 18},
+    'M.r':   {'range': (5, 10),  'duration': 2,  'cost': 2500,   'ideal': 7},
+    'R.r':   {'range': (27, 37), 'duration': 21, 'cost': 60000,  'ideal': 32}
+}
+
+# Penalty for deviating from ideal intervals
+PENALTY_SCALE = 1e4
+
+# =============================================================================
+# 2. Helper Functions
+# =============================================================================
+
+def generate_events(intervals_dict):
+    """Return list of (year, event_name)."""
+    events = []
+    for name, interval in intervals_dict.items():
+        if interval <= 0 or interval >= LIFETIME:
+            continue
+        years = np.arange(interval, LIFETIME, interval)
+        for y in years:
+            events.append((y, name))
+    events.sort(key=lambda x: x[0])
+    return events
+
+def compute_downtime_and_gap(events_bridge, events_road):
+    """Return total downtime (days) and minimum gap between successive events (years)."""
+    all_events = events_bridge + events_road
+    if not all_events:
+        return 0, LIFETIME
+    all_events.sort(key=lambda x: x[0])
+
+    import itertools
+    total_downtime = 0
+    years_list = []
+    for year, group in itertools.groupby(all_events, key=lambda x: x[0]):
+        years_list.append(year)
+        events_this_year = [ev for _, ev in group]
+        max_dur = 0
+        for ev in events_this_year:
+            if ev in bridge:
+                max_dur = max(max_dur, bridge[ev]['duration'])
+            else:
+                max_dur = max(max_dur, road[ev]['duration'])
+        total_downtime += max_dur
+
+    if len(years_list) >= 2:
+        gaps = np.diff(years_list)
+        min_gap = np.min(gaps)
+    else:
+        min_gap = LIFETIME
+    return total_downtime, min_gap
+
+def compute_cost(events_bridge, events_road, intervals_bridge, intervals_road):
+    """Total cost = sum of per‑event costs + quadratic penalty for deviation from ideal."""
+    cost = 0
+    for _, ev in events_bridge:
+        cost += bridge[ev]['cost']
+    for _, ev in events_road:
+        cost += road[ev]['cost']
+
+    for name, ideal in [(n, bridge[n]['ideal']) for n in bridge] + [(n, road[n]['ideal']) for n in road]:
+        if name in intervals_bridge:
+            dev = intervals_bridge[name] - ideal
+        else:
+            dev = intervals_road[name] - ideal
+        cost += PENALTY_SCALE * dev**2
+    return cost
 
 # =============================================================================
 # 3. Multi‑Objective Problem Definition
@@ -301,11 +385,9 @@ res = minimize(
 
 print("Optimization completed.")
 print(f"Number of non‑dominated solutions: {len(res.F)}")
+
 ```
-==========================================================
-n_gen  |  n_eval  | n_nds  |      eps      |   indicator  
-==========================================================
-     1 |     1000 |     26 |             - |             -
+   1 |     1000 |     26 |             - |             -
      2 |     2000 |     41 |  0.1176470588 |         ideal
      3 |     3000 |     42 |  0.1448437432 |         ideal
      4 |     4000 |     58 |  0.0856188084 |         ideal
@@ -361,6 +443,55 @@ min     128.000000     0.000020     0.306003
 max     175.000000     0.984929     1.118499
 
 ```
+# =============================================================================
+# 6. 2D and 3D Scatter Plots
+# =============================================================================
+
+# 3D plot
+fig = plt.figure(figsize=(12, 8))
+ax = fig.add_subplot(111, projection='3d')
+sc = ax.scatter(pareto_F['Downtime'], pareto_F['MinGap'], pareto_F['Cost_M'],
+                c=pareto_F['Cost_M'], cmap='viridis', alpha=0.8, edgecolors='k', s=50)
+ax.set_xlabel('Downtime (days)')
+ax.set_ylabel('Min Gap (years)')
+ax.set_zlabel('Cost (M€)')
+ax.set_title('Pareto Front – 3D View')
+plt.colorbar(sc, label='Cost (M€)', shrink=0.5)
+plt.tight_layout()
+plt.savefig('pareto_3d.png', dpi=150)
+plt.show()
+
+# 2D pairwise scatter plots
+fig, axes = plt.subplots(1, 3, figsize=(16, 4))
+
+ax = axes[0]
+sc = ax.scatter(pareto_F['Downtime'], pareto_F['MinGap'],
+                c=pareto_F['Cost_M'], cmap='plasma', alpha=0.8, edgecolors='k')
+ax.set_xlabel('Downtime (days)')
+ax.set_ylabel('Min Gap (years)')
+ax.set_title('Downtime vs Min Gap')
+plt.colorbar(sc, ax=ax, label='Cost (M€)')
+
+ax = axes[1]
+sc = ax.scatter(pareto_F['Downtime'], pareto_F['Cost_M'],
+                c=pareto_F['MinGap'], cmap='viridis', alpha=0.8, edgecolors='k')
+ax.set_xlabel('Downtime (days)')
+ax.set_ylabel('Cost (M€)')
+ax.set_title('Downtime vs Cost')
+plt.colorbar(sc, ax=ax, label='Min Gap (years)')
+
+ax = axes[2]
+sc = ax.scatter(pareto_F['MinGap'], pareto_F['Cost_M'],
+                c=pareto_F['Downtime'], cmap='coolwarm', alpha=0.8, edgecolors='k')
+ax.set_xlabel('Min Gap (years)')
+ax.set_ylabel('Cost (M€)')
+ax.set_title('Min Gap vs Cost')
+plt.colorbar(sc, ax=ax, label='Downtime (days)')
+
+plt.tight_layout()
+plt.savefig('pareto_2d_pairwise.png', dpi=150)
+plt.show()
+
 # =============================================================================
 # 7. AHP to Select a Preferred Solution
 # =============================================================================

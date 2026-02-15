@@ -1,6 +1,6 @@
 ---
 layout: post
-title: MACHINE LEARNING IMPLEMENTATION IN SMART BUILDING
+title: Predictive Occupancy Analytics for Intelligent Building Management- A Comparative Study
 description: |
   I wanted to undertake the study on machine learning techniques and I ended up designing a comparative evaluation of Agent-Based Modeling (ABM), k-Nearest Neighbors (kNN), and Markov Chains for occupancy prediction and smart building energy optimization. While researching I came across papers like Chen and Jiang et al who implement a GAN (Generative Adverserial Network) model to try and address this challenge by evaluating three modeling approaches that represent different strategies for transforming occupancy data into actionable intelligence. To start somewhere, I chose three predictive learning mechanisms and modelled them in Python. ABM seeks to understand the micro-level behaviors that generate macro-level patterns; kNN leverages historical patterns to predict future states; and Markov Chains model the stochastic nature of occupancy transitions. Together, they offer an option to have strategies and a perspective on what we would call the "whole life cycle" of occupancy information—from data collection through modeling to application.
 skills:

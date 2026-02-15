@@ -1,8 +1,7 @@
 ---
 layout: post
 title: Evolutionary Algorithm implementation in Infrastructure Maintenance
-description: 
-     I wanted to replicate the things I had picked up from the study module 'Whole Life Civil Systems Analysis' and come up with a project workflow that successfully demonstrates a multi‑objective optimization solution in Python, using specifically the Non Dominated Sorting Genetic Algorithm in the pymoo library, for integrated maintenance planning of a bridge and its access road.
+description: I wanted to replicate the things I had picked up from the study module 'Whole Life Civil Systems Analysis' and come up with a project workflow that successfully demonstrates a multi‑objective optimization solution in Python, using specifically the Non Dominated Sorting Genetic Algorithm in the pymoo library, for integrated maintenance planning of a bridge and its access road.
 Key elements include the six decision variables that determine the future usability of the infrastructure object in question.
     - 3 conflicting objectives that minimize downtime, maximize minimum gap, minimize cost
     - NSGA‑II to generate a diverse Pareto front
@@ -17,7 +16,7 @@ skills:
   - Analytical Hierarchy Process
   - Object Oriented Programming
   - Genetic Algorithm NSGA-II
-main-image: /
+main-image: /CAD_preview.png
 ---
 
 ## Introduction
@@ -94,12 +93,6 @@ The “ideal” intervals (used in the cost penalty) are taken from typical valu
 These represent the intervals that would be chosen if each system were maintained independently, without considering the other.
 
 The cost penalty term PENALTY_SCALE * (interval - ideal)^2 with PENALTY_SCALE = 1e4 was calibrated so that deviations of a few years produce cost differences comparable to the intervention costs themselves.
-
-![Figure1]
-<p align="center">
-  <img src="/_projects/occupancy_modelling_smart_buildings/image_2.png" width="900">
-</p>
-
 ---
 
 ##  Validation of the Optimization Results
@@ -117,28 +110,35 @@ How can we be confident that the Pareto front is meaningful?
 5.1 The Pareto Front
 
 Figure 1 shows the 3D Pareto front (Downtime vs. Min Gap vs. Cost). The points form a curved surface, clearly illustrating the three‑way trade‑off.
-[Insert 3D plot here]
+
+![3D Pareto Front]
+<p align="center">
+  <img src="/_projects/Genetic_Algo_MOO_Project/pareto_3D.png" width="900">
+</p>
 
 The 2D pairwise plots (Figure 2) reveal the conflicts more directly:
-
     Downtime vs. Min Gap: A negative correlation – low downtime comes at the expense of a small minimum gap, and vice versa.
-
     Downtime vs. Cost: Also positive correlation – more interventions (lower downtime) increase cost.
-
     Min Gap vs. Cost: Weakly negative – achieving a large gap tends to reduce cost, because interventions are sparser.
 
-[Insert 2D pairwise plot here]
+![Insert 2D pairwise plot here]
+<p align="center">
+  <img src="/_projects/Genetic_Algo_MOO_Project/pareto_comparisions.png" width="900">
+</p>
+
+
 5.2 Parallel Coordinates
 
 Figure 3 presents the parallel coordinates of all Pareto‑optimal solutions. Each line represents one solution, connecting its six decision variables (left) to the three objectives (right). The lines are color‑coded by solution type (gray for all, coloured for extremes).
-[Insert parallel coordinates plot here]
+![Parallel coordinates plot]
+<p align="center">
+  <img src="/_projects/Genetic_Algo_MOO_Project/parallel_pareto_solutions" width="900">
+</p>
+
 
 This visualisation is particularly powerful:
-
     One can see, for example, that solutions with very low downtime (red line) have short SDO, M, and DR intervals, and also short road intervals – they align maintenance aggressively.
-
     Solutions with large minimum gap (green line) have longer intervals, often with one interval much longer than the others to create spacing.
-
     The AHP‑selected solution (gold dashed line) strikes a balance: intervals are moderate, downtime around 110 days, gap around 5 years, cost around €8.5M.
 
 5.3 AHP‑Selected Solution
@@ -160,10 +160,13 @@ This results in:
 
 This solution represents a compromise: it sacrifices some downtime (108 days instead of the minimum 70) to achieve a comfortable gap and moderate cost. It is marked in red on the 2D plot (Figure 4).
 
-[Insert plot with AHP‑selected point]
+![plot with AHP‑selected point]
+<p align="center">
+  <img src="/_projects/Genetic_Algo_MOO_Project/AHP_best.png" width="900">
+</p>
 
 
-## 6. Conclusions and Outlook
+## Conclusions and Outlook
 
 This project demonstrates a complete workflow for multi‑objective optimization in civil infrastructure maintenance. The key takeaways are:
     MOO provides a rational basis for trade‑off analysis. Instead of guessing, engineers can present a range of Pareto‑optimal alternatives.
@@ -177,3 +180,31 @@ Future extensions could include:
     Adding environmental impact as a fourth objective.
     Using real‑world cost data and full life‑cycle assessment.
     Interactive dashboards for stakeholders to explore the Pareto front in real time.
+
+
+## Python Script Implementation
+
+'''python
+     """
+     Multi Objective Optimization of Integrated Bridge and Road Maintenance
+     with Parallel Coordinates and AHP based Decision Support
+
+This project demonstrates a complete workflow:
+    - 6 decision variables (intervention intervals for bridge and road)
+    - 3 conflicting objectives: minimize downtime, maximize minimum gap, minimize cost
+    - NSGA II to generate the Pareto front
+    - AHP to incorporate stakeholder preferences and select a preferred solution
+    - Parallel coordinates to visualize the entire Pareto set
+
+All visualizations are saved as PNG files.
+"""
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from pymoo.algorithms.moo.nsga2 import NSGA2
+from pymoo.core.problem import Problem
+from pymoo.optimize import minimize
+from mpl_toolkits.mplot3d import Axes3D
+'''
+

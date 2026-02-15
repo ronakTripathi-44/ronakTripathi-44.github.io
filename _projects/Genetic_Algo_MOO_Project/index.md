@@ -1,15 +1,19 @@
 ---
 layout: post
 title: Evolutionary Algorithm implementation in Infrastructure Maintenance
-description: > I wanted to replicate the things I had picked up from the study module 'Whole Life Civil Systems Analysis' and come up with a project workflow that successfully demonstrates a multi‑objective optimization solution in Python, using specifically the Non Dominated Sorting Genetic Algorithm in the pymoo library, for integrated maintenance planning of a bridge and its access road.
-Key elements include the six decision variables that determine the future usability of the infrastructure object in question.
-    - 3 conflicting objectives that minimize downtime, maximize minimum gap, minimize cost
-    - NSGA‑II to generate a diverse Pareto front
-    - AHP to incorporate stakeholder preferences and select a single solution
-    - Parallel coordinates to visualize the trade‑offs across all variables
+description: |
+  I wanted to replicate the things I had picked up from the study module 'Whole Life Civil Systems Analysis' and come up with a project workflow that successfully demonstrates a multi-objective optimization solution in Python, using specifically the Non Dominated Sorting Genetic Algorithm in the pymoo library, for integrated maintenance planning of a bridge and its access road.
 
-All figures are saved as PNG files. The code is modular and can be adapted to
-other infrastructure systems by modifying the intervention dictionaries.
+  Key elements include the six decision variables that determine the future usability of the infrastructure object in question.
+
+  - 3 conflicting objectives that minimize downtime, maximize minimum gap, minimize cost
+  - NSGA-II to generate a diverse Pareto front
+  - AHP to incorporate stakeholder preferences and select a single solution
+  - Parallel coordinates to visualize the trade-offs across all variables
+
+  All figures are saved as PNG files. The code is modular and can be adapted to
+  other infrastructure systems by modifying the intervention dictionaries.
+
 
 skills:
   - Multi Objective Optimization Strategy

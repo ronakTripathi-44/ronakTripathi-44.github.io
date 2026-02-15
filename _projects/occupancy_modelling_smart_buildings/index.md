@@ -8,7 +8,7 @@ skills:
   - Agent Based Modelling
   - Object Oriented Programming
   - Smart Building Applications
-main-image: /image_5.png
+main-image: /smart_preview.png
 ---
 
 ## The Energy Challenge in Modern Buildings
@@ -195,10 +195,10 @@ A tiered smart building architecture can be practically recommended:
 - kNN → Server-level forecasting  
 - ABM → Strategic simulation  
 
-![Figure4]
+
 <p align="center">
   <img src="/_projects/occupancy_modelling_smart_buildings/image_4.png" width="900">
-</p> ![Figure4]
+</p> 
 
 ---
 
@@ -224,6 +224,11 @@ Professor Vervaeke’s concept of “relevance realization” finds concrete exp
 
 This diversity suggests that truly intelligent building systems might benefit from what cognitive scientists call “complementary learning systems”—multiple representations that together provide more robust understanding than any single approach.
 
+<p align="center">
+  <img src="/_projects/occupancy_modelling_smart_buildings/image_5.png" width="900">
+</p> 
+
+---
 ## Practical Deployment Considerations and Limitations
 
 Moving from laboratory models to real-world deployment involves several practical challenges:

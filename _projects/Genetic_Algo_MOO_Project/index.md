@@ -188,11 +188,25 @@ Future extensions could include:
 
 
 ## Python Script Implementation
-
-'''python
-     """
+python
+    """
      Multi Objective Optimization of Integrated Bridge and Road Maintenance
      with Parallel Coordinates and AHP based Decision Support
+
+This project demonstrates a complete workflow:
+    - 6 decision variables (intervention intervals for bridge and road)
+    - 3 conflicting objectives: minimize downtime, maximize minimum gap, minimize cost
+    - NSGA II to generate the Pareto front
+    - AHP to incorporate stakeholder preferences and select a preferred solution
+    - Parallel coordinates to visualize the entire Pareto set
+
+All visualizations are saved as PNG files.
+
+
+```Python
+"""
+Multi Objective Optimization of Integrated Bridge and Road Maintenance
+with Parallel Coordinates and AHP based Decision Support
 
 This project demonstrates a complete workflow:
     - 6 decision variables (intervention intervals for bridge and road)
@@ -211,5 +225,219 @@ from pymoo.algorithms.moo.nsga2 import NSGA2
 from pymoo.core.problem import Problem
 from pymoo.optimize import minimize
 from mpl_toolkits.mplot3d import Axes3D
-'''
 
+# =============================================================================
+# 3. Multi‑Objective Problem Definition
+# =============================================================================
+
+class IntegratedMaintenanceProblem(Problem):
+    """
+    Decision variables: [SDO, M, DR, SDO.r, M.r, R.r] intervals (years)
+    Objectives (minimize):
+        f0: total downtime (days)
+        f1: - (minimum gap)   → so maximizing gap is achieved by minimizing f1
+        f2: total cost (€)
+    """
+    def __init__(self):
+        xl = np.array([bridge['SDO']['range'][0],
+                       bridge['M']['range'][0],
+                       bridge['DR']['range'][0],
+                       road['SDO.r']['range'][0],
+                       road['M.r']['range'][0],
+                       road['R.r']['range'][0]])
+        xu = np.array([bridge['SDO']['range'][1],
+                       bridge['M']['range'][1],
+                       bridge['DR']['range'][1],
+                       road['SDO.r']['range'][1],
+                       road['M.r']['range'][1],
+                       road['R.r']['range'][1]])
+        super().__init__(n_var=6, n_obj=3, xl=xl, xu=xu)
+
+    def _evaluate(self, X, out, *args, **kwargs):
+        n = X.shape[0]
+        F = np.zeros((n, 3))
+
+        for i in range(n):
+            intervals_bridge = {
+                'SDO': X[i,0],
+                'M':   X[i,1],
+                'DR':  X[i,2]
+            }
+            intervals_road = {
+                'SDO.r': X[i,3],
+                'M.r':   X[i,4],
+                'R.r':   X[i,5]
+            }
+
+            events_bridge = generate_events(intervals_bridge)
+            events_road   = generate_events(intervals_road)
+
+            downtime, min_gap = compute_downtime_and_gap(events_bridge, events_road)
+            cost = compute_cost(events_bridge, events_road, intervals_bridge, intervals_road)
+
+            F[i, 0] = downtime
+            F[i, 1] = -min_gap      # minimize negative gap
+            F[i, 2] = cost
+
+        out["F"] = F
+# =============================================================================
+# 4. Run NSGA‑II
+# =============================================================================
+
+problem = IntegratedMaintenanceProblem()
+
+algorithm = NSGA2(
+    pop_size=1000,
+    eliminate_duplicates=True
+)
+
+res = minimize(
+    problem,
+    algorithm,
+    ('n_gen', 1000),
+    seed=42,
+    verbose=True
+)
+
+print("Optimization completed.")
+print(f"Number of non‑dominated solutions: {len(res.F)}")
+```
+==========================================================
+n_gen  |  n_eval  | n_nds  |      eps      |   indicator  
+==========================================================
+     1 |     1000 |     26 |             - |             -
+     2 |     2000 |     41 |  0.1176470588 |         ideal
+     3 |     3000 |     42 |  0.1448437432 |         ideal
+     4 |     4000 |     58 |  0.0856188084 |         ideal
+     5 |     5000 |     69 |  0.1122435782 |         nadir
+     6 |     6000 |     61 |  0.0028062447 |         ideal
+     7 |     7000 |     76 |  0.2733003849 |         nadir
+     8 |     8000 |     71 |  0.1548461922 |         ideal
+     9 |     9000 |     95 |  0.1429033281 |         nadir
+    10 |    10000 |    117 |  0.1415447905 |         nadir
+    11 |    11000 |    122 |  0.0062287477 |         ideal
+    12 |    12000 |    114 |  0.0588235294 |         nadir
+    13 |    13000 |    126 |  0.0250477904 |         nadir
+    14 |    14000 |    141 |  0.0366270921 |         nadir
+    15 |    15000 |    170 |  0.0136350423 |             f
+    16 |    16000 |    171 |  0.0106394238 |             f
+    17 |    17000 |    178 |  0.0114861407 |             f
+    18 |    18000 |    183 |  0.0408163265 |         nadir
+    19 |    19000 |    181 |  0.0084161122 |             f
+    20 |    20000 |    194 |  0.0316595567 |         nadir
+    21 |    21000 |    183 |  0.0211689929 |         ideal
+    22 |    22000 |    191 |  0.1685477161 |         nadir
+
+   
+   999 |   999000 |   1000 |  0.0002226102 |             f
+  1000 |  1000000 |   1000 |  0.0002855066 |             f
+Optimization completed.
+Number of non‑dominated solutions: 1000
+Output is truncated. View as a scrollable element or open in a text editor. Adjust cell output settings
+
+```
+# =============================================================================
+# 5. Prepare DataFrames for Analysis
+# =============================================================================
+
+pareto_X = pd.DataFrame(res.X, columns=['SDO', 'M', 'DR', 'SDO.r', 'M.r', 'R.r'])
+pareto_F = pd.DataFrame(res.F, columns=['Downtime', 'NegMinGap', 'Cost'])
+pareto_F['MinGap'] = -pareto_F['NegMinGap']          # positive minimum gap
+pareto_F['Cost_M'] = pareto_F['Cost'] / 1e6          # cost in millions €
+
+print("\nObjective ranges on Pareto front:")
+print(pareto_F[['Downtime', 'MinGap', 'Cost_M']].describe())
+```
+
+Objective ranges on Pareto front:
+          Downtime       MinGap       Cost_M
+count  1000.000000  1000.000000  1000.000000
+mean    137.989000     0.501344     0.612504
+std      11.179618     0.286896     0.211264
+min     128.000000     0.000020     0.306003
+25%     130.000000     0.258312     0.427509
+50%     135.000000     0.501276     0.541505
+75%     141.000000     0.745874     0.776810
+max     175.000000     0.984929     1.118499
+
+```
+# =============================================================================
+# 7. AHP to Select a Preferred Solution
+# =============================================================================
+
+def ahp_weights(pairwise_matrix):
+    """Return normalized weights and consistency ratio."""
+    n = pairwise_matrix.shape[0]
+    eigvals, eigvecs = np.linalg.eig(pairwise_matrix)
+    max_eig = np.max(eigvals.real)
+    principal = eigvecs[:, np.argmax(eigvals.real)].real
+    weights = principal / np.sum(principal)
+    CI = (max_eig - n) / (n - 1)
+    RI_dict = {1:0, 2:0, 3:0.58, 4:0.9, 5:1.12, 6:1.24, 7:1.32, 8:1.41, 9:1.45, 10:1.49}
+    RI = RI_dict.get(n, 1.49)
+    CR = CI / RI if RI != 0 else 0
+    return weights, CR
+
+# Pairwise comparison matrix for (Downtime, MinGap, Cost)
+# Example: MinGap twice as important as Downtime, Cost three times as important as Downtime
+obj_matrix = np.array([
+    [1,   1/2, 1/3],
+    [2,   1,   2/3],
+    [3,   3/2, 1]
+])
+obj_weights, obj_CR = ahp_weights(obj_matrix)
+print("\nAHP weights for objectives (Downtime, MinGap, Cost):", obj_weights)
+print("Consistency ratio:", obj_CR)
+
+# Normalize objective values (0 = best, 1 = worst)
+F_min = res.F.min(axis=0)
+F_max = res.F.max(axis=0)
+F_norm = (res.F - F_min) / (F_max - F_min + 1e-10)   # 0 = best, 1 = worst
+benefit = 1 - F_norm                                 # higher is better
+
+overall_score = np.dot(benefit, obj_weights)
+best_idx = np.argmax(overall_score)
+
+print(f"\nBest solution according to AHP weights: Index {best_idx}")
+print("Decision variables:")
+print(pareto_X.iloc[best_idx])
+print("Objective values:")
+print(f"  Downtime = {pareto_F.loc[best_idx, 'Downtime']:.1f} days")
+print(f"  Min Gap  = {pareto_F.loc[best_idx, 'MinGap']:.1f} years")
+print(f"  Cost     = {pareto_F.loc[best_idx, 'Cost_M']:.2f} M€")
+
+# Mark AHP best on a 2D plot
+fig, ax = plt.subplots(figsize=(8,6))
+sc = ax.scatter(pareto_F['Downtime'], pareto_F['MinGap'],
+                c=pareto_F['Cost_M'], cmap='plasma', alpha=0.6, edgecolors='k')
+ax.scatter(pareto_F.loc[best_idx, 'Downtime'],
+           pareto_F.loc[best_idx, 'MinGap'],
+           color='red', s=200, edgecolor='black', label='AHP best')
+ax.set_xlabel('Downtime (days)')
+ax.set_ylabel('Min Gap (years)')
+ax.set_title('Pareto Front with AHP‑selected Solution')
+plt.colorbar(sc, ax=ax, label='Cost (M€)')
+ax.legend()
+plt.tight_layout()
+plt.savefig('pareto_with_ahp.png', dpi=150)
+plt.show()
+```
+
+AHP weights for objectives (Downtime, MinGap, Cost): [0.16666667 0.33333333 0.5       ]
+Consistency ratio: 0.0
+
+Best solution according to AHP weights: Index 462
+Decision variables:
+SDO      14.647530
+M         7.966580
+DR       30.195509
+SDO.r    18.895013
+M.r       8.973815
+R.r      35.000001
+Name: 462, dtype: float64
+Objective values:
+  Downtime = 142.0 days
+  Min Gap  = 0.9 years
+  Cost     = 0.46 M€
+
+  

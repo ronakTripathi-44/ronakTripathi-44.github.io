@@ -136,7 +136,7 @@ The 2D pairwise plots (Figure 2) reveal the conflicts more directly:
 Figure 3 presents the parallel coordinates of all Pareto‑optimal solutions. Each line represents one solution, connecting its six decision variables (left) to the three objectives (right). The lines are color‑coded by solution type (gray for all, coloured for extremes).
 ![Parallel coordinates plot]
 <p align="center">
-  <img src="/_projects/Genetic_Algo_MOO_Project/parallel_pareto_solutions" width="900">
+  <img src="/_projects/Genetic_Algo_MOO_Project/parallel_pareto_solutions.png" width="900">
 </p>
 
 
@@ -148,6 +148,7 @@ This visualisation is particularly powerful:
 5.3 AHP‑Selected Solution
 
 Applying the weights (Downtime: 0.167, Min Gap: 0.333, Cost: 0.500) gave the highest overall score to the solution with:
+
 | Variable | Value (years) |
 |----------|---------------|
 | SDO |	14.2 |
